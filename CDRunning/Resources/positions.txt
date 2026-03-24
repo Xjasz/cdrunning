@@ -1,0 +1,36 @@
+TempusMain_Key:NUMPAD1
+{X=1579,Y=951,Width=50,Height=50}
+{X=33,Y=41}{X=36,Y=25}{X=14,Y=14}{X=9,Y=31}
+Color [A=255, R=255, G=208, B=140]Color [A=255, R=254, G=254, B=254]Color [A=255, R=255, G=255, B=255]Color [A=255, R=241, G=241, B=241]
+VelMain_Key:NUMPAD2
+{X=1547,Y=953,Width=50,Height=50}
+{X=43,Y=15}{X=21,Y=37}{X=22,Y=17}{X=3,Y=15}
+Color [A=255, R=241, G=241, B=241]Color [A=255, R=255, G=207, B=139]Color [A=255, R=230, G=230, B=230]Color [A=255, R=254, G=254, B=254]
+HemlockMain_Key:NUMPAD3
+{X=1573,Y=951,Width=50,Height=50}
+{X=36,Y=34}{X=37,Y=15}{X=14,Y=23}{X=14,Y=16}
+Color [A=255, R=246, G=246, B=246]Color [A=255, R=254, G=254, B=254]Color [A=255, R=235, G=235, B=235]Color [A=255, R=252, G=252, B=252]
+Kast545Main_Key:NUMPAD4
+{X=1586,Y=953,Width=50,Height=50}
+{X=47,Y=23}{X=3,Y=16}{X=3,Y=28}
+Color [A=255, R=237, G=237, B=237]Color [A=255, R=249, G=249, B=249]Color [A=255, R=225, G=180, B=120]
+Minibak_Key:NUMPAD5
+{X=1549,Y=959,Width=50,Height=50}
+{X=42,Y=33}{X=11,Y=25}{X=16,Y=15}{X=43,Y=18}
+Color [A=255, R=250, G=250, B=250]Color [A=255, R=222, G=222, B=222]Color [A=255, R=253, G=253, B=253]Color [A=255, R=252, G=252, B=252]
+ShroudMain_BR_Key:NUMPAD6
+{X=1560,Y=973,Width=50,Height=50}
+{X=15,Y=49}{X=23,Y=7}{X=40,Y=17}
+Color [A=255, R=231, G=231, B=231]Color [A=255, R=255, G=255, B=255]Color [A=255, R=242, G=242, B=242]
+LachSubMain_Key:NUMPAD7
+{X=1572,Y=957,Width=50,Height=50}
+{X=47,Y=33}{X=28,Y=19}{X=7,Y=41}{X=32,Y=16}
+Color [A=255, R=249, G=249, B=249]Color [A=255, R=254, G=254, B=254]Color [A=255, R=255, G=205, B=138]Color [A=255, R=254, G=254, B=254]
+TempusTest_Key:NUMPAD8
+{X=1603,Y=963,Width=50,Height=50}
+{X=37,Y=38}{X=36,Y=22}{X=22,Y=9}{X=6,Y=11}
+Color [A=255, R=252, G=252, B=252]Color [A=255, R=255, G=255, B=255]Color [A=255, R=251, G=251, B=251]Color [A=255, R=246, G=246, B=246]
+VelTest_Key:NUMPAD9
+{X=1578,Y=961,Width=50,Height=50}
+{X=18,Y=36}{X=18,Y=15}{X=34,Y=15}{X=46,Y=15}
+Color [A=255, R=251, G=251, B=251]Color [A=255, R=242, G=242, B=242]Color [A=255, R=241, G=241, B=241]Color [A=255, R=238, G=238, B=238]
