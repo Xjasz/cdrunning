@@ -27,9 +27,10 @@ Public Class AutoSwapForm
         End If
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnOther.Click, btnOther.Click
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnOther.Click
         RefreshSwapper()
         Hide()
+        CDRunningForm.Show()
     End Sub
 
     Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
@@ -77,6 +78,7 @@ Public Class AutoSwapForm
                     End If
                 Next
                 SWAP_MAPPER_ITEMS.Add(CURRENT_SWAP_MAPPER_ITEM)
+                CDRunningForm.CURRENT_RECOIL_INDEX = -1
                 RefreshSwapper()
                 LoadSwapForm()
             End If
@@ -123,6 +125,7 @@ Public Class AutoSwapForm
             End If
         Next
         SWAP_MAPPER_ITEMS = temp_items
+        CDRunningForm.CURRENT_RECOIL_INDEX = -1
         RefreshSwapper()
         LoadSwapForm()
     End Sub

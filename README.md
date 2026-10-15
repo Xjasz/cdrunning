@@ -95,6 +95,11 @@ Set the main keys in the dropdowns:
 ### 3. Create or select a preset
 Use the preset dropdown to select an existing preset or create a new one.
 
+Preset names control behaviour:
+- `Key:NUMPAD1` anywhere in the name binds that key to the preset (any key name from the dropdowns works).
+- `__` in the name marks the fallback preset used when no screen match is found.
+- `_BR_` in the name turns BattleRifle rapid-fire on when the preset is selected.
+
 ### 4. Enter stage values
 Add stage values in the textbox using this format:
 

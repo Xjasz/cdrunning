@@ -823,6 +823,7 @@ Public Class CDRunningForm
         Dim response As String = InputBox("Enter name of new item", "Enter Item", "")
         If response <> "" Then
             cmbPresets.Items.Add(response)
+            cmbLoadouts.Items.Add("")
         End If
         SaveEverything()
     End Sub
@@ -833,14 +834,20 @@ Public Class CDRunningForm
         Else
             Dim response As String = MsgBox("Are you sure you want to delete?", MsgBoxStyle.YesNo)
             If response = vbYes Then
-                AutoSwapForm.RemoveSwapItem(cmbPresets.Items.Item(cmbPresets.SelectedIndex))
-                cmbPresets.Items.RemoveAt(cmbPresets.SelectedIndex)
+                Dim idx As Integer = cmbPresets.SelectedIndex
+                AutoSwapForm.RemoveSwapItem(cmbPresets.Items.Item(idx))
+                cmbPresets.Items.RemoveAt(idx)
+                cmbLoadouts.Items.RemoveAt(idx)
                 SaveEverything()
             End If
         End If
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        If cmbPresets.SelectedIndex < 0 Then
+            MsgBox("First select a preset", MsgBoxStyle.Critical)
+            Return
+        End If
         Dim response As String = MsgBox("Are you sure you want to override current loadout?", MsgBoxStyle.YesNo)
         If response = vbYes Then
             cmbLoadouts.Items.Item(cmbPresets.SelectedIndex) = txtStages.Text
@@ -850,6 +857,10 @@ Public Class CDRunningForm
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        If cmbPresets.SelectedIndex < 0 Then
+            MsgBox("First select a preset", MsgBoxStyle.Critical)
+            Return
+        End If
         Dim response As String = InputBox("Type what you want to rename this to", "Rename Item", cmbPresets.Items.Item(cmbPresets.SelectedIndex))
         If response <> "" Then
             For Each item As SwapMapperClass In SWAP_MAPPER_ITEMS
@@ -876,7 +887,7 @@ Public Class CDRunningForm
             Using g As Graphics = Graphics.FromImage(bmp)
                 g.CopyFromScreen(dragMeTopLeft, New Point(0, 0), dragMeSize)
             End Using
-            Dim saveName As String = cmbPresets.Text.Replace(":", "_")
+            Dim saveName As String = String.Join("_", cmbPresets.Text.Split(Path.GetInvalidFileNameChars()))
             Dim bmpSavePath As String = Application.StartupPath & RESOURCE_DIR & saveName
             bmp.Save(bmpSavePath & ".bmp", Imaging.ImageFormat.Bmp)
         End Using
