@@ -96,7 +96,7 @@ Set the main keys in the dropdowns:
 Use the preset dropdown to select an existing preset or create a new one.
 
 Preset names control behaviour:
-- `Key:NUMPAD1` anywhere in the name binds that key to the preset (any key name from the dropdowns works).
+- `Key:NUMPAD1` at the END of the name binds that key (A-Z, 0-9, F1-F12, NUMPAD0-9); it takes effect after the next Start.
 - `__` in the name marks the fallback preset used when no screen match is found.
 - `_BR_` in the name turns BattleRifle rapid-fire on when the preset is selected.
 
