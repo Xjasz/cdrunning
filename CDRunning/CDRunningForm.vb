@@ -141,10 +141,10 @@ Public Class CDRunningForm
     Private Sub CDRunningForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If File.Exists(Application.StartupPath & RESOURCE_DIR & SETTINGS_FILE) Then
             Using sw As New StreamReader(Application.StartupPath & RESOURCE_DIR & SETTINGS_FILE)
-                Do
+                Do Until sw.EndOfStream
                     cmbPresets.Items.Add(sw.ReadLine)
                     cmbLoadouts.Items.Add(sw.ReadLine)
-                Loop Until sw.EndOfStream
+                Loop
                 sw.Close()
             End Using
         Else
@@ -192,7 +192,7 @@ Public Class CDRunningForm
 
         SaveEverything()
 
-        cmbPresets.SelectedIndex = 0
+        If cmbPresets.Items.Count > 0 Then cmbPresets.SelectedIndex = 0
         tmrKeyBinds.Enabled = True
     End Sub
 
@@ -203,15 +203,13 @@ Public Class CDRunningForm
         SaveEverything()
     End Sub
     Private Sub SaveEverything()
-        If cmbPresets.Items.Count > 0 Then
-            Using sw As New StreamWriter(Application.StartupPath & RESOURCE_DIR & SETTINGS_FILE)
-                For x As Integer = 0 To cmbPresets.Items.Count - 1
-                    sw.WriteLine(cmbPresets.Items.Item(x))
-                    sw.WriteLine(cmbLoadouts.Items.Item(x))
-                Next
-                sw.Close()
-            End Using
-        End If
+        Using sw As New StreamWriter(Application.StartupPath & RESOURCE_DIR & SETTINGS_FILE)
+            For x As Integer = 0 To cmbPresets.Items.Count - 1
+                sw.WriteLine(cmbPresets.Items.Item(x))
+                sw.WriteLine(cmbLoadouts.Items.Item(x))
+            Next
+            sw.Close()
+        End Using
         Using sw As New StreamWriter(Application.StartupPath & RESOURCE_DIR & DEFAULTKEY_FILE)
             sw.WriteLine(cmbStartKey.SelectedItem)
             sw.WriteLine(cmbBRKey.SelectedItem)
@@ -320,7 +318,8 @@ Public Class CDRunningForm
                     Dim innerPart = movement.Split(":")
                     lblStatus.Text = "Stage: " & x
                     lblStatus.Refresh()
-                    If innerPart.Length > 1 Then
+                    Dim parsed As Integer
+                    If innerPart.Length > 2 AndAlso Integer.TryParse(innerPart(0), parsed) AndAlso Integer.TryParse(innerPart(1), parsed) AndAlso Integer.TryParse(innerPart(2), parsed) Then
                         ' X:Y:MiliSeconds
                         Dim strengthY As Integer = Integer.Parse(innerPart(0))
                         Dim strengthX As Integer = Integer.Parse(innerPart(1))
@@ -391,7 +390,8 @@ Public Class CDRunningForm
         For x As Integer = 0 To cmbMappings.Items.Count - 1
             Dim virtualKeyCode As Integer = StringToVirtualKey(Split(cmbMappings.Items.Item(x), "-")(1))
             If virtualKeyCode <> 0 AndAlso (GetAsyncKeyState(virtualKeyCode) And &H8000) <> 0 Then
-                cmbPresets.SelectedIndex = Split(cmbMappings.Items.Item(x), "-")(0)
+                Dim presetIdx As Integer = CInt(Split(cmbMappings.Items.Item(x), "-")(0))
+                If presetIdx < cmbPresets.Items.Count Then cmbPresets.SelectedIndex = presetIdx
             End If
         Next
     End Sub
@@ -821,8 +821,9 @@ Public Class CDRunningForm
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Dim response As String = InputBox("Enter name of new item", "Enter Item", "")
-        If response <> "" Then
+        If response <> "" AndAlso Not cmbPresets.Items.Contains(response) Then
             cmbPresets.Items.Add(response)
+            cmbLoadouts.Items.Add("")
         End If
         SaveEverything()
     End Sub
@@ -833,14 +834,20 @@ Public Class CDRunningForm
         Else
             Dim response As String = MsgBox("Are you sure you want to delete?", MsgBoxStyle.YesNo)
             If response = vbYes Then
-                AutoSwapForm.RemoveSwapItem(cmbPresets.Items.Item(cmbPresets.SelectedIndex))
-                cmbPresets.Items.RemoveAt(cmbPresets.SelectedIndex)
+                Dim idx As Integer = cmbPresets.SelectedIndex
+                AutoSwapForm.RemoveSwapItem(cmbPresets.Items.Item(idx))
+                cmbPresets.Items.RemoveAt(idx)
+                cmbLoadouts.Items.RemoveAt(idx)
                 SaveEverything()
             End If
         End If
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        If cmbPresets.SelectedIndex < 0 Then
+            MsgBox("First select a preset", MsgBoxStyle.Critical)
+            Return
+        End If
         Dim response As String = MsgBox("Are you sure you want to override current loadout?", MsgBoxStyle.YesNo)
         If response = vbYes Then
             cmbLoadouts.Items.Item(cmbPresets.SelectedIndex) = txtStages.Text
@@ -850,8 +857,12 @@ Public Class CDRunningForm
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        If cmbPresets.SelectedIndex < 0 Then
+            MsgBox("First select a preset", MsgBoxStyle.Critical)
+            Return
+        End If
         Dim response As String = InputBox("Type what you want to rename this to", "Rename Item", cmbPresets.Items.Item(cmbPresets.SelectedIndex))
-        If response <> "" Then
+        If response <> "" AndAlso Not cmbPresets.Items.Contains(response) Then
             For Each item As SwapMapperClass In SWAP_MAPPER_ITEMS
                 If item.smsName = cmbPresets.Items.Item(cmbPresets.SelectedIndex) Then
                     item.smsName = response
@@ -876,7 +887,7 @@ Public Class CDRunningForm
             Using g As Graphics = Graphics.FromImage(bmp)
                 g.CopyFromScreen(dragMeTopLeft, New Point(0, 0), dragMeSize)
             End Using
-            Dim saveName As String = cmbPresets.Text.Replace(":", "_")
+            Dim saveName As String = String.Join("_", cmbPresets.Text.Split(Path.GetInvalidFileNameChars()))
             Dim bmpSavePath As String = Application.StartupPath & RESOURCE_DIR & saveName
             bmp.Save(bmpSavePath & ".bmp", Imaging.ImageFormat.Bmp)
         End Using
