@@ -5,11 +5,14 @@ Public Class AutoSwapForm
     Public Shared SWAPMAPPER_ACTIVE As Boolean = False
     Public Shared SWAPMAPPERDRAG_LOCKED As Boolean = False
 
-    Private Sub LoadSwapForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub LoadSwapForm_VisibleChanged(sender As Object, e As EventArgs) Handles MyBase.VisibleChanged
+        If Not Visible Then Return
         LoadSwapForm()
+        cmbPresets.Items.Clear()
         For Each item In CDRunningForm.cmbPresets.Items
             cmbPresets.Items.Add(item)
         Next
+        cmbPresets.SelectedIndex = CDRunningForm.cmbPresets.SelectedIndex
     End Sub
 
     Private Sub LoadSwapForm_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing
@@ -27,9 +30,10 @@ Public Class AutoSwapForm
         End If
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnOther.Click, btnOther.Click
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnOther.Click
         RefreshSwapper()
         Hide()
+        CDRunningForm.Show()
     End Sub
 
     Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
@@ -77,6 +81,7 @@ Public Class AutoSwapForm
                     End If
                 Next
                 SWAP_MAPPER_ITEMS.Add(CURRENT_SWAP_MAPPER_ITEM)
+                CDRunningForm.CURRENT_RECOIL_INDEX = -1
                 RefreshSwapper()
                 LoadSwapForm()
             End If
@@ -123,6 +128,7 @@ Public Class AutoSwapForm
             End If
         Next
         SWAP_MAPPER_ITEMS = temp_items
+        CDRunningForm.CURRENT_RECOIL_INDEX = -1
         RefreshSwapper()
         LoadSwapForm()
     End Sub
@@ -193,7 +199,7 @@ Public Class AutoSwapForm
     End Sub
 
     Private Sub cmbPresets_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPresets.SelectedIndexChanged
-        CDRunningForm.cmbPresets.SelectedIndex = cmbPresets.SelectedIndex
+        If cmbPresets.SelectedIndex >= 0 Then CDRunningForm.cmbPresets.SelectedIndex = cmbPresets.SelectedIndex
     End Sub
 
 End Class

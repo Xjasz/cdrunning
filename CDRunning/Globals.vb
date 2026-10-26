@@ -36,7 +36,7 @@ Public Module Globals
     End Class
 
     Public Function StringToRectangle(input As String) As Rectangle
-        Dim match As Match = Regex.Match(input, "{X=(?<x>\d+),Y=(?<y>\d+),Width=(?<width>\d+),Height=(?<height>\d+)}")
+        Dim match As Match = Regex.Match(input, "{X=(?<x>-?\d+),Y=(?<y>-?\d+),Width=(?<width>\d+),Height=(?<height>\d+)}")
 
         If match.Success Then
             Dim x As Integer = Integer.Parse(match.Groups("x").Value)
